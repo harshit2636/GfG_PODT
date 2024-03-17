@@ -1,24 +1,14 @@
 class Solution {
-    public Node sort(Node head){
-        if(head==null) return head;
-        Node n=head, q=head;
-        int count=1, i=0;
-        while(n.next!=null){
-            count++;
-            n=n.next;
-        }
-        Integer arr[]=new Integer[count];
-        n=head;
-        while(i<count){
-            arr[i]=n.data;
-            n=n.next;
-            i++;
-        }
-        Arrays.sort(arr);
-        for(i=0;i<count;i++){
-            q.data=arr[i];
-            q=q.next;
-        }
-        return head;
+    public static int countPairs(LinkedList<Integer> head1, LinkedList<Integer> head2, int x) {
+        HashMap<Integer, Integer> mp = new HashMap<>();
+        for(int ele: head1)
+            mp.put(ele, 1);
+
+        int count = 0;
+        for(int ele: head2)
+            if(mp.containsKey(x - ele))
+                count++;
+
+        return count;
     }
 }
