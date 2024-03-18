@@ -1,14 +1,22 @@
-class Solution {
-    public static int countPairs(LinkedList<Integer> head1, LinkedList<Integer> head2, int x) {
-        HashMap<Integer, Integer> mp = new HashMap<>();
-        for(int ele: head1)
-            mp.put(ele, 1);
+class Solution
+{
 
-        int count = 0;
-        for(int ele: head2)
-            if(mp.containsKey(x - ele))
-                count++;
+    static ArrayList <Integer> levelOrder(Node root)
+    {
+        Queue<Node> q = new LinkedList<>() ;
+        ArrayList<Integer> ans = new ArrayList<>();
+        q.add(root);
 
-        return count;
+        while(!q.isEmpty()){
+            Node val = q.poll();
+            ans.add(val.data);
+            if(val.left!=null){
+                q.add(val.left);
+            }
+            if(val.right!=null){
+                q.add(val.right);
+            }
+        }
+        return ans;
     }
 }
