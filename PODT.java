@@ -1,22 +1,12 @@
-class Solution
-{
+class Solution {
+    public Stack<Integer> insertAtBottom(Stack<Integer> st, int x) {
+        Stack<Integer> stack1 = new Stack<>();
+        while (!st.isEmpty()) stack1.push(st.pop());
 
-    static ArrayList <Integer> levelOrder(Node root)
-    {
-        Queue<Node> q = new LinkedList<>() ;
-        ArrayList<Integer> ans = new ArrayList<>();
-        q.add(root);
+        stack1.push(x);
 
-        while(!q.isEmpty()){
-            Node val = q.poll();
-            ans.add(val.data);
-            if(val.left!=null){
-                q.add(val.left);
-            }
-            if(val.right!=null){
-                q.add(val.right);
-            }
-        }
-        return ans;
+        Stack<Integer> stack2 = new Stack<>();
+        while (!stack1.isEmpty()) stack2.push(stack1.pop());
+        return stack2;
     }
 }
