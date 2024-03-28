@@ -1,46 +1,71 @@
-class Solution {
-    public int[] matrixDiagonally(int[][] mat) {
-        int eo = 0;//check even or odd.
-        int row = mat.length;
-        int col = mat[0].length;
-        int count = 0;
-        int ans[] = new int[row*col];
-
-        for(int i=0;i<row;i++){
-            if(eo%2!=0){
-                int pos = 0;
-                for(int j=i;j>=0;j--){
-                    ans[count++] = mat[pos][j];
-                    pos++;
-                }
-            }else{
-                int pos = i;
-                for(int j=0;j<=i;j++){
-                    ans[count++] = mat[pos][j];
-                    pos--;
-                }
-            }
-            eo++;
-        }
-
-        for(int i=1;i<row;i++){
-            if(eo%2!=0){
-                int pos = i;
-                for(int j=col-1;j>=i;j--){
-                    ans[count++] = mat[pos][j];
-                    pos++;
-                }
-            }else{
-                int pos = row-1;
-                for(int j=i;j<col;j++){
-                    ans[count++] = mat[pos][j];
-                    pos--;
-                }
-            }
-            eo++;
-        }
-
-        return ans;
-
+class pair{
+    int node;
+    int wt;
+    pair(int _node, int _weight)
+    {
+        node = _node;
+        wt = _weight;
     }
 }
+class Solution {
+    int findCity(int n, int m, int[][] edges,int distanceThreshold)
+    {
+        //code here
+        ArrayList<ArrayList<pair>> adj = new ArrayList<>();
+
+        for(int i=0;i<n;i++)
+        {
+            adj.add(new ArrayList<>());
+        }
+
+        for(int i=0;i<m;i++)
+        {
+            adj.get(edges[i][0]).add(new pair(edges[i][1], edges[i][2]));
+            adj.get(edges[i][1]).add(new pair(edges[i][0], edges[i][2]));
+        }
+
+        int res = Integer.MAX_VALUE;
+        int idx = 0;
+        for(int i=0;i<n;i++)
+        {
+            int ans = calc(adj, i, new int[n], distanceThreshold);
+            if(ans <= res)
+            {
+                res = ans;
+                idx = i;
+            }
+        }
+
+        return idx;
+    }
+
+    int calc(ArrayList<ArrayList<pair>> adj , int src, int[] dist, int D)
+    {
+        Queue<Integer> q = new PriorityQueue<>();
+        q.add(src);
+        for(int i=0;i<dist.length;i++) dist[i] = (int)(1e9);
+        dist[src] = 0;
+        int c = 0;
+
+        while(!q.isEmpty())
+        {
+            int node = q.remove();
+            for(pair p: adj.get(node))
+            {
+                if(dist[node] + p.wt < dist[p.node])
+                {
+                    dist[p.node] = p.wt + dist[node];
+                    q.add(p.node);
+                }
+            }
+        }
+
+        for(int i=0;i<dist.length;i++)
+        {
+            if(dist[i] <= D) c++;
+        }
+
+        return c;
+    }
+}
+
